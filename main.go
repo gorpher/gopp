@@ -44,13 +44,13 @@ func GenTreeNodeByDependency(startNode string, allNodes map[string]*TreeNode) []
 	visitedNode := make(map[string]*TreeNode, 0)
 	for _, node := range rootNode.Children {
 		nNode := &TreeNode{
-			Name:     node.Name,
+			Name:     node.Path,
 			Path:     node.Path,
 			Value:    node.Value,
 			Children: make([]*TreeNode, 0),
 		}
 		if len(node.Children) == 0 {
-			node.Name = ShortName(node.Path)
+			nNode.Name = ShortName(nNode.Path)
 			visitedNode[node.Path] = nNode
 			continue
 		}
@@ -75,7 +75,7 @@ func GenTreeNodeByDependency(startNode string, allNodes map[string]*TreeNode) []
 				visitedNode[node.Path] = node
 			}
 			if !ok {
-				nNode := &TreeNode{Name: v.Name, Path: v.Path, Value: v.Value}
+				nNode := &TreeNode{Name: ShortName(node.Path), Path: v.Path, Value: v.Value}
 				visitedNode[nNode.Path] = nNode
 				queue.PushBack(nNode)
 			}
